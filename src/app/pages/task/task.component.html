@@ -1,0 +1,58 @@
+<div class="container">
+    <br>
+    <div #alert class="alert alert-danger alert-dismissible fade" role="alert">
+        <strong>Debes agregar una descripción!</strong>
+        <button type="button" class="close" aria-label="Close" (click)="closeAlert()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <form class="form" (ngSubmit)="addTask(fTask)" #fTask="ngForm">
+        <div class="form-group">
+            <label for="exampleFormControlTextarea1">Escriba la tarea</label>
+            <textarea [(ngModel)]="taskForm.descripcion" name="descripcion" placeholder="Ejemplo: Realizar el reporte semanal ..." class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+        </div>
+        
+        <button type="submit" class="btn btn-success mb-2">Agregar tarea</button>
+    </form>
+    <br>
+    <table class="table text-center">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Descripción</th>
+            <th scope="col">Realizada</th>
+            <th scope="col">Eliminar</th>
+          </tr>
+        </thead>
+        <tbody *ngFor="let task of tasks | async ; let i = index">
+          <tr [class]="task.realizada? 'realizada' : ''">
+            <th scope="row">{{ i + 1 }}</th>
+            <td>{{ task.descripcion }}</td>
+            <td >
+              <input (click)="updateTask(task)" [(ngModel)]="task.realizada" value="task.realizada" type="checkbox" class="form-check-input" id="exampleCheck1">
+            </td>
+            <td>
+              <button data-toggle="modal" data-target="#exampleModal" (click)="open(modal, task.id)"  class="btn btn-danger mb-2" ><i  class="fas fa-trash"></i></button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+</div>
+
+<ng-template #modal let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Confirmar</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss(tempID = '')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      ¿Realmente deseas eliminar esta tarea?
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" (click)="modal.dismiss(tempID = '')">Cancel</button>
+        <button type="button" class="btn btn-danger" (click)="deleteTask()">Ok</button>
+    </div>
+</ng-template>
+
