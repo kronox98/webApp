@@ -1,6 +1,10 @@
-<!-- <p>gallery works!</p> -->
+
 <div class="container">
     <br>
+
+    <ngb-alert *ngIf="successMessage" (close)="successMessage = ''">
+        <strong>{{ successMessage }}</strong>
+    </ngb-alert>
 
     <ngb-tabset [justify]="currentJustify">
 
@@ -20,7 +24,7 @@
           <ng-template ngbTabContent>
             <br>
             <div class="row">
-                <figure *ngFor="let img of imgsW" class="col-md-6">
+                <figure *ngFor="let img of imgsW" class="col-md-6 animated fadeIn fast">
                     <img alt="picture" [src]="img.src" class="img-fluid">
                     <p class="text-center my-3">{{ img.des }}</p>                      
                 </figure>
@@ -44,13 +48,7 @@
             <ng-template ngbTabContent>
               <br>
                 <div class="row justify-content-center">
-                
-                    <!-- <div *ngFor="let img of imgsW" class="col-sm">
-                        <picture>
-                            <img [src]="img.src" class="img-fluid img-thumbnail" alt="...">
-                        </picture>
-                    </div> -->
-                    
+
                     <ngb-carousel *ngIf="images" class="animated fadeIn fast" >
                         <ng-template ngbSlide>
                         <div class="picsum-img-wrapper">
@@ -90,10 +88,6 @@
             </ng-template>
         </ngb-tab>
     </ngb-tabset>
-
-    <!-- <app-jumbotron></app-jumbotron> -->
-    
-    
     
 </div>
 

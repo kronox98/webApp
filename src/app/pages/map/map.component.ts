@@ -10,36 +10,33 @@ declare var mapboxgl;
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.scss']
 })
+
 export class MapComponent implements OnInit {
 
   tasks = [];
-
-  private tasksCollection: AngularFirestoreCollection<Task>;
-
+  tasksCollection: AngularFirestoreCollection<Task>;
   show: boolean;
+  showAlert = false;
 
   constructor(private db: AngularFirestore) { 
     this.tasksCollection = this.db.collection<Task>(config.collection_endpoint);
-
     this.db.collection("task").get().subscribe((querySnapshot) => {
       querySnapshot.forEach((doc) => {
-          // doc.data() is never undefined for query doc snapshots
-          // console.log(doc.id, " => ", doc.data());
-          this.tasks.push(doc.data());
-
-          console.log(this.tasks);
-          
+          this.tasks.push(doc.data());          
       });
     });
     setTimeout(() => {
       this.initMap();
     }, 500);
+
+    setTimeout(() => {
+      if (this.tasks.length == 0) {
+        this.showAlert = true;
+      }
+    }, 1000);
   }
 
-  ngOnInit() {
-    
-  }
-
+  ngOnInit() { }
 
   initMap() {
     const latitud = Number(4.6150663);
@@ -51,21 +48,13 @@ export class MapComponent implements OnInit {
       center: [ longitud, latitud ],
       zoom: 10
     });
-
     this.setMarkers(map);
-    // const marker = new mapboxgl.Marker()
-    //   .setLngLat([ longitud, latitud ])
-    //   .addTo( map );
-    //   this.show = true;
   }
 
   setMarkers(map) {
-
-
     setTimeout(() => {
       this.tasks.forEach(element => {
-        console.log(element);
-        var popup = new mapboxgl.Popup({ offset: 25 }).setText(
+        var popup = new mapboxgl.Popup({ offset: 100 }).setText(
           element.descripcion
         );
         const marker = new mapboxgl.Marker()
@@ -74,10 +63,5 @@ export class MapComponent implements OnInit {
           .addTo( map );
       });
     }, 500);
-    
-
   }
-
-
-
 }

@@ -19,7 +19,7 @@ import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 import { AngularFireAuthModule } from '@angular/fire/auth';
-
+import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
 // BootsTrap
 
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
@@ -44,6 +44,7 @@ const firebaseConfig = {
     MapComponent,
   ],
   imports: [
+    MatSnackBarModule,
     BrowserModule,
     AppRoutingModule,
     ComponentsModule,

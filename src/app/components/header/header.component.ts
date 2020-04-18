@@ -6,12 +6,18 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
+  
+  navbarOpen = false;
 
-  appname = 'webPage';
+  appname = 'WebPage';
 
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  toggleNavbar() {
+    this.navbarOpen = !this.navbarOpen;
   }
 
 }

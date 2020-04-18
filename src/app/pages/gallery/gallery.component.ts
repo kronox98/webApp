@@ -1,14 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
+import { NgbAlertConfig } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-gallery',
   templateUrl: './gallery.component.html',
   styleUrls: ['./gallery.component.scss'],
-  providers: [ NgbCarouselConfig ]
+  providers: [ NgbCarouselConfig, NgbAlertConfig ]
 })
 export class GalleryComponent implements OnInit {
 
+  successMessage = 'Navega entre los diferentes temas de la galería!';
   images = [700, 533, 807, 124].map((n) => `https://picsum.photos/id/${n}/900/500`);
 
   currentJustify = 'start';
@@ -48,7 +50,7 @@ export class GalleryComponent implements OnInit {
     },
     {
       src: './../../../assets/design/4.jpg',
-      des: 'Herramientas de trabajo'
+      des: 'Herramientas  de trabajo'
     },
     {
       src: './../../../assets/design/5.jpg',
@@ -102,11 +104,13 @@ export class GalleryComponent implements OnInit {
     }
   ]
 
-  constructor(private config: NgbCarouselConfig) { 
+  constructor(private config: NgbCarouselConfig, private alertConfig: NgbAlertConfig) { 
     config.interval = 10000;
     config.wrap = false;
     config.keyboard = false;
     config.pauseOnHover = true;
+    alertConfig.type = 'info';
+    alertConfig.dismissible = true;
   }
 
   ngOnInit(): void {

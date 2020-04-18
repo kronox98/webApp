@@ -7,14 +7,27 @@
         <h2 class="h1-responsive font-weight-bold text-center my-4">Contacto</h2>
         <!--Section description-->
         <p class="text-center w-responsive mx-auto mb-5">Tienes alguna duda, por favor escribenos y muy pronto nos pondremos en contacto contigo</p>
+
+        <!-- <form #f="ngForm" (ngSubmit)="onSubmit(f)" novalidate>
+            <input name="nombre" ngModel required #nombre="ngModel">
+            <input name="email" ngModel required #email="ngModel">
+            <input name="asunto" ngModel required #asunto="ngModel">
+            <input name="mensaje" ngModel required #mensaje="ngModel">
+            <button>Submit</button>
+        </form> -->
+<!--           
+          <p>First name value: {{ nombre.value }}</p>
+          <p>First name valid: {{ email.valid }}</p>
+          <p>Form value: {{ f.value | json }}</p>
+          <p>Form valid: {{ f.valid }}</p> -->
         
-        <form (ngSubmit)="sendMail(FContact)" #FContact="ngForm">
+        <!-- <form > -->
 
             <div class="row">
         
                 <!--Grid column-->
                 <div class="col-md-9 mb-md-0 mb-5">
-                    <form id="contact-form" name="contact-form" >
+                    <form #FContact="ngForm" (ngSubmit)="sendMail(FContact)"  novalidate id="contact-form" name="contact-form" >
         
                         <!--Grid row-->
                         <div class="row">
@@ -23,7 +36,7 @@
                             <div class="col-md-6">
                                 <div class="md-form mb-0">
                                     <label for="name" class="">Nombre</label>
-                                    <input [(ngModel)]="formContact.nombre" type="text" id="name" name="name" placeholder="Escribe tu nombre" class="form-control">
+                                    <input name="nombre" ngModel required #nombre="ngModel" placeholder="Escribe tu nombre" class="form-control"> 
                                 </div>
                             </div>
                             <!--Grid column-->
@@ -32,7 +45,7 @@
                             <div class="col-md-6">
                                 <div class="md-form mb-0">
                                     <label for="email" class="">Email</label>
-                                    <input [(ngModel)]="formContact.email" type="text" id="email" name="email" placeholder="tucorreo@ejemplo.com" class="form-control">
+                                    <input type="email" name="email" ngModel required #email="ngModel" placeholder="tucorreo@ejemplo.com" class="form-control">
                                 </div>
                             </div>
                             <!--Grid column-->
@@ -44,8 +57,9 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="md-form mb-0">
+                                    <br>
                                     <label for="subject" class="">Asunto</label>
-                                    <input [(ngModel)]="formContact.asunto" type="text" id="subject" name="subject" placeholder="Inquietudes, servicios, felicitaciones..." class="form-control">
+                                    <input name="asunto" ngModel required #asunto="ngModel" placeholder="Inquietudes, servicios, felicitaciones..." class="form-control">
                                 </div>
                             </div>
                         </div>
@@ -58,20 +72,34 @@
                             <div class="col-md-12">
         
                                 <div class="md-form">
+                                    <br>
                                     <label for="message">Por favor, escribe tu mensaje</label>
-                                    <textarea  [(ngModel)]="formContact.mensaje" type="text" id="message" name="message" placeholder="Comienza..." rows="2" class="form-control md-textarea"></textarea>
+                                    <!-- <input name="mensaje" ngModel required #mensaje="ngModel"> -->
+                                    <textarea  name="mensaje" ngModel required #mensaje="ngModel" placeholder="Comienza..." rows="2" class="form-control md-textarea"></textarea>
                                 </div>
         
                             </div>
                         </div>
+                        <br>
+                        <ngb-alert type="danger" *ngIf="showAlert" [dismissible]="true">
+                            <strong>Alerta!</strong> Debes llenar todos los campos del formulario
+                        </ngb-alert>
                         <!--Grid row-->
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="text-center text-md-left">
+                                    <br>
+                                    <button id="boton-enviar" type="submit" class="btn btn-success mb-2" style="width:200px">
+                                        Enviar
+                                    </button>
+                                    
+                                </div>
+                            </div>
+                        </div>
         
                     </form>
                     <br>
         
-                    <div class="text-center text-md-left">
-                        <button type="submit" class="btn btn-success mb-2">Enviar</button>
-                    </div>
                     <div class="status"></div>
                 </div>
                 <!--Grid column-->
@@ -95,7 +123,7 @@
                 <!--Grid column-->
         
             </div>
-        </form>
+        <!-- </form> -->
     
     </section>
 </div>

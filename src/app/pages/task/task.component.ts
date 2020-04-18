@@ -1,25 +1,27 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { TaskService } from 'src/app/services/task.service';
-import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollectionGroup, AngularFirestoreCollection } from '@angular/fire/firestore';
+import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { config } from './../../models/app.config';
 import { Task } from 'src/app/models/app.model';
 import { map } from 'rxjs/operators';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
-export interface Shirt { name: string; price: number; }
-export interface ShirtId extends Shirt { id: string; }
 @Component({
   selector: 'app-task',
   templateUrl: './task.component.html',
   styleUrls: ['./task.component.scss']
 })
+
 export class TaskComponent implements OnInit {
 
   @ViewChild('alert', { static: true }) alert: ElementRef;
   @ViewChild('modal', { static: true }) modal: ElementRef;
+  
   private tasksCollection: AngularFirestoreCollection<Task>;
+
   tasks: Observable<Task[]>;
   tempID: any;
   taskForm = {
@@ -31,33 +33,28 @@ export class TaskComponent implements OnInit {
     }
   }
 
-  constructor(private taskService: TaskService, private db: AngularFirestore, public modalser: NgbModal) {
-    
+  constructor(private taskService: TaskService, private db: AngularFirestore, public modalser: NgbModal, private _snackBar: MatSnackBar) {
     this.tasksCollection = this.db.collection<Task>(config.collection_endpoint, ref => ref.orderBy('descripcion', 'asc'));
-
     this.tasks = this.tasksCollection.snapshotChanges().pipe(
       map(actions => actions.map(a => {
         const data = a.payload.doc.data() as Task;
-        const id = a.payload.doc.id;
-        console.log(data);
-        
+        const id = a.payload.doc.id;        
         return { id, ...data };
       }))
-    ); 
-    
+    );     
   }
 
-
   ngOnInit() {
-    
+  }
+
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open( message, action, {
+      duration: 2000,
+    });
   }
 
   closeAlert() {
     this.alert.nativeElement.classList.remove('show');
-  }
-
-  getTasks() {
-    // this.getTasks();
   }
 
   open(content, id) {
@@ -66,43 +63,39 @@ export class TaskComponent implements OnInit {
   }
 
   updateTask(task: Task) {
-    console.log('Task before: ', task);
-
     const taskUpdate = {
       id: task.id,
       descripcion: task.descripcion,
       realizada: !task.realizada,
       position: task.position
     }
-
     this.taskService.updateTask(taskUpdate);
-    
+    this.openSnackBar('Tarea actualizada correctamente', 'Aceptar');
   }
 
   deleteTask() {
-    console.log('ID: ', this.tempID);
     if (this.tempID != '' && this.tempID != undefined) {
       this.taskService.removeTask(this.tempID);
+      this.openSnackBar('Tarea eliminada correctamente', 'Aceptar');
       this.modalser.dismissAll();
     }
   }
 
   addTask(fTask: NgForm){
-    console.log('Agregando tarea ...');
-    // console.log(fTask.value);
     if (this.taskForm.descripcion == '') {
       this.alert.nativeElement.classList.add('show');
       setTimeout(() => {
         this.alert.nativeElement.classList.remove('show');
       }, 2000);
-    }else{
+    }else {
       this.getPosition()
       .then( pos => {
         this.taskForm.position = pos;
         this.taskService.addTask(this.taskForm);
         this.taskForm.descripcion = '';
+        this.openSnackBar('La tarea fué agregada correctamente', 'Aceptar');
       }).catch( err => {
-        alert('No fue posible obtener la úbicacion, por favor concede el permiso');
+        this.openSnackBar('No fué posible obtener la ubicación. Por favor, permite al acceso', 'Aceptar');
       });
     }
   }

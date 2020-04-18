@@ -25,19 +25,20 @@
           </tr>
         </thead>
         <tbody *ngFor="let task of tasks | async ; let i = index">
-          <tr [class]="task.realizada? 'realizada' : ''">
-            <th scope="row">{{ i + 1 }}</th>
-            <td>{{ task.descripcion }}</td>
-            <td >
-              <input (click)="updateTask(task)" [(ngModel)]="task.realizada" value="task.realizada" type="checkbox" class="form-check-input" id="exampleCheck1">
+          <tr [class]="task.realizada? 'realizada' : 'align-items-center'">
+            <th class="align-middle" scope="row">{{ i + 1 }}</th>
+            <td class="align-middle">{{ task.descripcion }}</td>
+            <td class="align-middle">
+              <!-- <div style="padding: 10%"> -->
+                <input (click)="updateTask(task)" [(ngModel)]="task.realizada" value="task.realizada" type="checkbox" id="exampleCheck1">
+              <!-- </div> -->
             </td>
-            <td>
+            <td class="align-middle">
               <button data-toggle="modal" data-target="#exampleModal" (click)="open(modal, task.id)"  class="btn btn-danger mb-2" ><i  class="fas fa-trash"></i></button>
             </td>
           </tr>
         </tbody>
       </table>
-
 </div>
 
 <ng-template #modal let-modal>

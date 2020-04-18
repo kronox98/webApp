@@ -1,6 +1,8 @@
-<!-- <p>map works!</p> -->
 
 <div class="container">
     <br>
+    <ngb-alert type="info" *ngIf="showAlert" [dismissible]="false">
+        <strong>Oops!</strong> Parece que no tienes tareas agregadas, intenta agregar una para poder visualizarla
+    </ngb-alert>
     <div  id='map' style='width: 100%; height: 500px;'></div>
 </div>

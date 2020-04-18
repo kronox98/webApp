@@ -16,22 +16,21 @@ export class TaskService {
     this.tasks = this.db.collection<Task>(config.collection_endpoint);
   }
 
-  getTasks() {
-    
-  }
-
-  updateTask(task) {
-    console.log(task);
-    
+  updateTask(task) {    
     this.tasks.doc(task.id).update(task)
     .then( data => {
-      console.log("Document successfully updated!");
+      console.log("Tarea actualizada correctamente");
     });
   }
 
   addTask(task: any) {
-    console.log(task);
-    this.tasks.add(task);    
+    this.tasks.add(task)
+    .then( data => {
+      console.log('Tarea agregada correctamente');      
+    })
+    .catch( err => {
+      console.error('No fué posible agregar la tarea');      
+    });    
   }
 
   removeTask(id: string) {
@@ -41,7 +40,7 @@ export class TaskService {
     })
     .catch(
       err => {
-        console.error('Error elimando tarea', err);        
+        console.error('Error eliminando tarea', err);        
       }
     )
   }
